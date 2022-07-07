@@ -1,6 +1,8 @@
 import os
 import discord
 from dotenv import load_dotenv
+import mysql.connector
+
 
 
 load_dotenv()
@@ -23,9 +25,29 @@ async def on_member_join(member):
 
 @client.event
 async def on_message(message):
-
-    test_message = "Karl Marx is our lord and savior - Jacob"
-    if message.content == 'snowden':
+    if '!coords' in message.content:
+        Database = mysql.connector.connect(
+        host="remotemysql.com",
+        user="xkY2VihBPB",
+        password="eed9xj8iHb",
+        database="xkY2VihBPB",
+        auth_plugin='mysql_native_password'
+        )
+        mycursor = Database.cursor()
+        query = "SELECT * FROM property_cords"
+        mycursor.execute(query)
+        rows = mycursor.fetchall()
+        flag = True
+        for i in rows:
+            if i[5] == message.author:
+                flag = True
+                pass
+            else:
+                flag = False
+        if not flag:
+            query = ""
+        else:
+            pass
         response = test_message
         await message.channel.send(response)
 client.run(TOKEN)
