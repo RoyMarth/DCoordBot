@@ -20,4 +20,12 @@ async def on_ready():
 async def on_member_join(member):
     await member.create_dm()
     await member.dm_channel.send(f'Hi {member.name}, welcome to a Brave New Realm!')
+
+@client.event
+async def on_message(message):
+
+    test_message = "Karl Marx is our lord and savior - Jacob"
+    if message.content == 'snowden':
+        response = test_message
+        await message.channel.send(response)
 client.run(TOKEN)
