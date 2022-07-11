@@ -64,8 +64,6 @@ async def on_message(message):
             for i in rows:
                 if i[5] == message.author:
                     flag = True
-                else:
-                    flag = False
             if not flag:
                 print ("if")
                 fcord = False
