@@ -37,7 +37,7 @@ class Coord:
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 GUILD = os.getenv('DISCORD_GUILD')
-
+PASS = os.getenv('MYSQL_PASS')
 client = discord.Client()
 
 @client.event
@@ -58,7 +58,7 @@ async def on_message(message):
         Database = mysql.connector.connect(
         host="localhost",
         user="BotDis",
-        password="Jacob123",
+        password=PASS,
         database="snowdenmc",
         auth_plugin='mysql_native_password'
         )
