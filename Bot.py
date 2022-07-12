@@ -10,10 +10,16 @@ class Coord:
         self.z2 = z2
     def GetArea(self):
         deb = 0
+        print(self.x1)
+        print(self.x2)
+        print(self.z1)
+        print(self.z2)
         if self.x1 > 0 and self.x2 > 0 or self.x1 < 0 and self.x2 <0:
             if self.x1 > self.x2:
+                print("1")
                 deb = (abs(self.x1) - abs(self.x2)) + 1
             else:
+                print("2")
                 deb = (abs(self.x2) - abs(self.x1)) + 1
         elif self.x1 >= 0 and self.x2 <=0 or self.x1 <= 0 and self.x2 >= 0:
             deb = (abs(self.x1) + abs(self.x2)) + 1
@@ -24,6 +30,7 @@ class Coord:
                 ate = (abs(self.z2) - abs(self.z1)) + 1
         elif self.z1 >= 0 and self.z2 <= 0 or self.z1 <=0 and self.z2 >=0:
             ate = (abs(self.z1) + abs(self.z2)) + 1
+        print (str(deb) + "  " + str(ate))
         return (deb * ate)
 
 
@@ -47,7 +54,7 @@ async def on_member_join(member):
 
 @client.event
 async def on_message(message):
-    if '!coords' in message.content:
+    if '!claim' in message.content:
         Database = mysql.connector.connect(
         host="localhost",
         user="BotDis",
@@ -89,11 +96,14 @@ async def on_message(message):
                         z2 = float(message.content[mid+1:end])
                     count += 1
                 panda = Coord(x1, z1, x2, z2)
-                query = ""
+                query = "INSERT INTO coords VALUES (null," + str(panda.x1) + ", " + str(panda.z1) + "," + str(panda.x2) + "," + str(panda.z2) + ",\'" + str(message.author) +"\'," + str(panda.GetArea()) + ")"
+                mycursor.execute(query)
+                Database.commit()
             else:
-                query = ""
-        except:
-            pass
-        response = panda.GetArea()
+                
+                pass
+        except Exception as e:
+            print (e)
+        response = "Your cords have been claimed and have an area of: " + str(panda.GetArea())
         await message.channel.send(response)
 client.run(TOKEN)
